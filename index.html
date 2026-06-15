@@ -107,10 +107,22 @@ return;
 }
 
 const list=allQuotes[religion]||[];
-const matches=list.filter(q=>q.topic===topic&&q.language===language);
+
+// First try exact match: religion + topic + language
+let matches=list.filter(q=>q.topic===topic&&q.language===language);
+
+// If no exact topic match, fall back to any quote in the same religion and language
+if(matches.length===0){
+    matches=list.filter(q=>q.language===language);
+}
+
+// If still no match, fall back to any quote in that religion
+if(matches.length===0){
+    matches=list;
+}
 
 if(matches.length===0){
-errorMessage.innerText="No quote found for this selection yet. Add one to quotes.json.";
+errorMessage.innerText="No quotes found for this religion yet. Add quotes to quotes.json.";
 errorMessage.style.display="block";
 return;
 }
