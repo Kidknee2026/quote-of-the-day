@@ -248,7 +248,9 @@ input{
         <div class="card">
             <h3>Recommended Reading</h3>
             
-            <button>Affiliate link placeholder</button>
+            <a id="affiliateLink" href="#" target="_blank">
+    <button id="affiliateButton">Recommended Reading</button>
+</a>
         </div>
 
         <div class="card">
@@ -264,7 +266,28 @@ input{
 </div>
 
 <script>
-const quotes = {
+const affiliateLinks = {
+    Islam: {
+        name: "The Clear Quran",
+        link: "https://amzn.to/4uGM8Mq"
+    },
+    Christianity: {
+        name: "NIV Study Bible",
+        link: "https://amzn.to/4emR17d"
+    },
+    Buddhism: {
+        name: "The Heart of the Buddha's Teaching",
+        link: "https://amzn.to/4fN4BTM"
+    },
+    Hinduism: {
+        name: "Bhagavad Gita",
+        link: "https://amzn.to/4oyfhbh"
+    },
+    Judaism: {
+        name: "The Torah",
+        link: "https://amzn.to/4vbXAka"
+    }
+};
     Buddhism:{
         English:{quote:"Peace comes from within. Do not seek it without.", source:"Buddha", meaning:"Inner peace begins in the mind."},
         Arabic:{quote:"السلام يأتي من الداخل، فلا تبحث عنه في الخارج.", source:"بوذا", meaning:"السلام الداخلي يبدأ من العقل والقلب."},
@@ -327,7 +350,10 @@ function showQuote(){
     }
 
     const selected = quotes[religion][language];
+const affiliate = affiliateLinks[religion];
 
+document.getElementById("affiliateLink").href = affiliate.link;
+document.getElementById("affiliateButton").innerText = affiliate.name;
     document.getElementById("quoteBox").style.direction = language === "Arabic" ? "rtl" : "ltr";
     document.getElementById("sharePreview").style.direction = language === "Arabic" ? "rtl" : "ltr";
 
