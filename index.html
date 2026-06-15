@@ -52,19 +52,18 @@ input{width:80%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top
 <button onclick="showQuote()">Show me today's quote</button>
 </div>
 
-<div id="errorMessage">Please select religion, topic, and language.</div>
+<div id="errorMessage"></div>
 
 <div id="quoteBox">
 <div class="quote" id="quote"></div>
 <div class="source" id="source"></div>
 <div class="meaning" id="meaning"></div>
-
 <div class="share-buttons" id="shareButtons">
 <button onclick="copyQuote()" title="Copy"><svg viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3v12h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
-<a id="whatsappShare" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .2 5.3.2 11.8c0 2.1.6 4.1 1.6 5.9L0 24l6.5-1.7c1.7.9 3.6 1.4 5.6 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4z"/></svg></a>
-<a id="telegramShare" target="_blank" title="Telegram"><svg viewBox="0 0 24 24"><path d="M9.4 16.4 9 21.8c.6 0 .9-.3 1.2-.6l2.9-2.8 6 4.4c1.1.6 1.9.3 2.2-1l4-18.7c.4-1.6-.6-2.2-1.6-1.8L1.1 10C-.4 10.6-.4 11.5.8 11.9l5.8 1.8L20 5.2c.6-.4 1.2-.2.7.2L9.4 16.4z"/></svg></a>
-<a id="xShare" target="_blank" title="X"><svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.3L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.7-10L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.4h2L6.5 3.3H4.3l13.3 17.3z"/></svg></a>
-<a id="emailShare" title="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+<a id="whatsappShare" target="_blank" title="WhatsApp">W</a>
+<a id="telegramShare" target="_blank" title="Telegram">T</a>
+<a id="xShare" target="_blank" title="X">X</a>
+<a id="emailShare" title="Email">@</a>
 </div>
 </div>
 
@@ -90,7 +89,11 @@ let currentShareText="";
 fetch("quotes.json")
 .then(r=>r.json())
 .then(data=>{allQuotes=data;})
-.catch(()=>{document.getElementById("errorMessage").innerText="Could not load quotes.json.";document.getElementById("errorMessage").style.display="block";});
+.catch(()=>{
+ const e=document.getElementById("errorMessage");
+ e.innerText="Could not load quotes.json. Make sure quotes.json is uploaded next to index.html.";
+ e.style.display="block";
+});
 
 function showQuote(){
 const religion=document.getElementById("religion").value;
@@ -108,28 +111,28 @@ return;
 
 const list=allQuotes[religion]||[];
 
-// First try exact match: religion + topic + language
-let matches=list.filter(q=>q.topic===topic&&q.language===language);
+// Exact match first
+let matches=list.filter(q=>q.topic===topic && q.language===language);
 
-// If no exact topic match, fall back to any quote in the same religion and language
+// Fallback: same religion and same language
 if(matches.length===0){
-    matches=list.filter(q=>q.language===language);
+ matches=list.filter(q=>q.language===language);
 }
 
-// If still no match, fall back to any quote in that religion
+// Fallback: same religion, any language
 if(matches.length===0){
-    matches=list;
+ matches=list;
 }
 
 if(matches.length===0){
-errorMessage.innerText="No quotes found for this religion yet. Add quotes to quotes.json.";
+errorMessage.innerText="No quotes found for this religion yet.";
 errorMessage.style.display="block";
 return;
 }
 
 errorMessage.style.display="none";
 const selected=matches[Math.floor(Math.random()*matches.length)];
-const isArabic=language==="Arabic";
+const isArabic=selected.language==="Arabic";
 
 document.getElementById("quoteBox").style.direction=isArabic?"rtl":"ltr";
 document.getElementById("quote").innerText=selected.quote;
