@@ -1,0 +1,54 @@
+{
+  "Islam": [
+    {
+      "topic": "Faith",
+      "language": "English",
+      "quote": "And whoever puts their trust in God, He will be enough for them.",
+      "source": "Qur’an 65:3",
+      "meaning": "Trust and sincere effort can bring inner peace during uncertainty."
+    },
+    {
+      "topic": "Patience",
+      "language": "English",
+      "quote": "Indeed, with hardship comes ease.",
+      "source": "Qur’an 94:6",
+      "meaning": "Difficult times are temporary."
+    }
+  ],
+  "Christianity": [
+    {
+      "topic": "Love",
+      "language": "English",
+      "quote": "Love your neighbor as yourself.",
+      "source": "Mark 12:31",
+      "meaning": "Treat others with kindness and compassion."
+    }
+  ],
+  "Buddhism": [
+    {
+      "topic": "Peace",
+      "language": "English",
+      "quote": "Peace comes from within. Do not seek it without.",
+      "source": "Buddha",
+      "meaning": "Inner peace begins in the mind."
+    }
+  ],
+  "Hinduism": [
+    {
+      "topic": "Wisdom",
+      "language": "English",
+      "quote": "You have the right to work, but never to the fruit of work.",
+      "source": "Bhagavad Gita 2:47",
+      "meaning": "Focus on effort rather than outcomes."
+    }
+  ],
+  "Judaism": [
+    {
+      "topic": "Justice",
+      "language": "English",
+      "quote": "Justice, justice shall you pursue.",
+      "source": "Deuteronomy 16:20",
+      "meaning": "Always seek fairness and righteousness."
+    }
+  ]
+}
