@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quote of the Day</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(to right,#f4f6ff,#f9f2dc,#f4f6ff);
+    color:#1d2433;
+}
+.wrapper{
+    max-width:700px;
+    margin:40px auto;
+    padding:20px;
+}
+.badge{
+    display:inline-block;
+    background:#fff3d8;
+    color:#b35a00;
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    margin-bottom:10px;
+}
+h1{
+    font-size:64px;
+    margin:0;
+    font-weight:800;
+}
+.subtitle{
+    margin-top:10px;
+    color:#444;
+    line-height:1.5;
+}
+.search-box{
+    margin-top:30px;
+    background:white;
+    border-radius:18px;
+    padding:14px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    flex-wrap:wrap;
+}
+.search-box label{
+    font-weight:600;
+    font-size:14px;
+}
+select{
+    flex:1;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #ddd;
+}
+button{
+    background:#574bff;
+    color:white;
+    border:none;
+    border-radius:12px;
+    padding:14px 20px;
+    font-weight:700;
+    cursor:pointer;
+}
+.share-buttons{
+    display:none;
+    gap:12px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:18px;
+}
+.share-buttons a,
+.share-buttons button{
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    background:#111827;
+    color:white;
+    border:none;
+    border-radius:50%;
+    cursor:pointer;
+    padding:0;
+}
+.share-buttons svg{
+    width:22px;
+    height:22px;
+    fill:white;
+}
+#sharePreview{
+    display:none;
+    text-align:left;
+    margin:18px auto 0;
+    max-width:520px;
+    padding:18px;
+    border-radius:14px;
+    background:#ffffff;
+}
+#sharePreviewQuote{
+    font-size:32px;
+    line-height:1.25;
+    margin-bottom:12px;
+}
+#sharePreviewSource{
+    font-weight:700;
+    margin-bottom:12px;
+}
+#sharePreviewMeaning{
+    color:#333;
+}
+#quoteBox{
+    margin-top:25px;
+    padding:20px;
+    border-radius:18px;
+    background:white;
+    display:none;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+.quote{
+    font-size:34px;
+    line-height:1.4;
+    margin-bottom:10px;
+}
+.source{
+    font-weight:bold;
+    margin-bottom:12px;
+}
+.cards{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:20px;
+}
+.card{
+    background:white;
+    padding:18px;
+    border-radius:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+input{
+    width:80%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ddd;
+    margin-top:10px;
+}
+.footer{
+    text-align:center;
+    font-size:12px;
+    margin-top:20px;
+    color:#666;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="badge">Daily Wisdom</div>
+    <h1>Quote of the Day</h1>
+
+    <div class="subtitle">
+        Choose a religion, topic, and language to receive a thoughtful quote from a holy book,
+        with a short reflection.
+    </div>
+
+    <div class="search-box">
+        <label>Choose filters</label>
+
+        <select id="religion">
+            <option value="">Select religion</option>
+            <option value="Buddhism">Buddhism</option>
+            <option value="Christianity">Christianity</option>
+            <option value="Hinduism">Hinduism</option>
+            <option value="Islam">Islam</option>
+            <option value="Judaism">Judaism</option>
+        </select>
+
+        <select id="topic">
+            <option value="">Select topic</option>
+            <option value="Compassion">Compassion</option>
+            <option value="Faith">Faith</option>
+            <option value="Forgiveness">Forgiveness</option>
+            <option value="Hope">Hope</option>
+            <option value="Justice">Justice</option>
+            <option value="Love">Love</option>
+            <option value="Patience">Patience</option>
+            <option value="Peace">Peace</option>
+            <option value="Strength">Strength</option>
+            <option value="Wisdom">Wisdom</option>
+        </select>
+
+        <select id="language">
+            <option value="">Select language</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Chinese">Chinese</option>
+            <option value="English">English</option>
+            <option value="French">French</option>
+            <option value="Russian">Russian</option>
+            <option value="Spanish">Spanish</option>
+        </select>
+
+        <button onclick="showQuote()">Show me today's quote</button>
+    </div>
+
+    <div id="quoteBox">
+        <div class="quote" id="quote"></div>
+        <div class="source" id="source"></div>
+        <div id="meaning"></div>
+
+        <div id="sharePreview">
+            <div id="sharePreviewQuote"></div>
+            <div id="sharePreviewSource"></div>
+            <div id="sharePreviewMeaning"></div>
+        </div>
+
+        <div class="share-buttons" id="shareButtons">
+            <button onclick="copyQuote()" title="Copy quote" aria-label="Copy quote">
+                <svg viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3v12h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+            </button>
+            <a id="whatsappShare" target="_blank" title="Share on WhatsApp" aria-label="Share on WhatsApp">
+                <svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .2 5.3.2 11.8c0 2.1.6 4.1 1.6 5.9L0 24l6.5-1.7c1.7.9 3.6 1.4 5.6 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4zM12.2 21.7c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.9 1 1-3.8-.2-.4a9.7 9.7 0 0 1-1.5-5.1c0-5.4 4.4-9.8 9.8-9.8 2.6 0 5.1 1 6.9 2.9a9.7 9.7 0 0 1 2.9 6.9c.1 5.5-4.3 9.9-9.6 9.9zm5.4-7.3c-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6l.5-.6c.2-.2.2-.3.3-.5.1-.2.1-.4 0-.6-.1-.1-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.1 1.1-1.1 2.6s1.1 3 1.3 3.2c.2.3 2.2 3.4 5.3 4.7.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4z"/></svg>
+            </a>
+            <a id="facebookShare" target="_blank" title="Share on Facebook" aria-label="Share on Facebook">
+                <svg viewBox="0 0 24 24"><path d="M22.7 0H1.3C.6 0 0 .6 0 1.3v21.4C0 23.4.6 24 1.3 24h11.5v-9.3H9.7v-3.6h3.1V8.4c0-3.1 1.9-4.8 4.7-4.8 1.3 0 2.5.1 2.8.1V7h-1.9c-1.5 0-1.8.7-1.8 1.8v2.3h3.6l-.5 3.6h-3.1V24h6.1c.7 0 1.3-.6 1.3-1.3V1.3C24 .6 23.4 0 22.7 0z"/></svg>
+            </a>
+            <a id="xShare" target="_blank" title="Share on X" aria-label="Share on X">
+                <svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.3L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.7-10L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.4h2L6.5 3.3H4.3l13.3 17.3z"/></svg>
+            </a>
+            <a id="telegramShare" target="_blank" title="Share on Telegram" aria-label="Share on Telegram">
+                <svg viewBox="0 0 24 24"><path d="M9.4 16.4 9 21.8c.6 0 .9-.3 1.2-.6l2.9-2.8 6 4.4c1.1.6 1.9.3 2.2-1l4-18.7c.4-1.6-.6-2.2-1.6-1.8L1.1 10C-.4 10.6-.4 11.5.8 11.9l5.8 1.8L20 5.2c.6-.4 1.2-.2.7.2L9.4 16.4z"/></svg>
+            </a>
+            <button onclick="shareInstagram()" title="Instagram" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"><path d="M7 2h10c2.8 0 5 2.2 5 5v10c0 2.8-2.2 5-5 5H7c-2.8 0-5-2.2-5-5V7c0-2.8 2.2-5 5-5zm0 2c-1.7 0-3 1.3-3 3v10c0 1.7 1.3 3 3 3h10c1.7 0 3-1.3 3-3V7c0-1.7-1.3-3-3-3H7zm5 3.5A4.5 4.5 0 1 1 12 16.5 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 12 14.5 2.5 2.5 0 0 0 12 9.5zM17.8 6.2a1 1 0 1 1-1 1 1 1 0 0 1 1-1z"/></svg>
+            </button>
+            <a id="emailShare" title="Share by Email" aria-label="Share by Email">
+                <svg viewBox="0 0 24 24"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Recommended Reading</h3>
+            
+            <button>Affiliate link placeholder</button>
+        </div>
+
+        <div class="card">
+            <h3>Get Daily Quotes</h3>
+            
+            <input type="email" placeholder="Your email">
+        </div>
+    </div>
+
+    <div class="footer">
+        Quotes are for inspiration and education. Always refer to trusted translations and scholars for interpretation.
+    </div>
+</div>
+
+<script>
+const quotes = {
+    Buddhism:{
+        English:{quote:"Peace comes from within. Do not seek it without.", source:"Buddha", meaning:"Inner peace begins in the mind."},
+        Arabic:{quote:"السلام يأتي من الداخل، فلا تبحث عنه في الخارج.", source:"بوذا", meaning:"السلام الداخلي يبدأ من العقل والقلب."},
+        Chinese:{quote:"平静来自内心，不要向外寻求。", source:"佛陀", meaning:"内心的平静始于思想。"},
+        French:{quote:"La paix vient de l’intérieur. Ne la cherchez pas à l’extérieur.", source:"Bouddha", meaning:"La paix intérieure commence dans l’esprit."},
+        Russian:{quote:"Мир приходит изнутри. Не ищите его снаружи.", source:"Будда", meaning:"Внутренний покой начинается в разуме."},
+        French:{quote:"La paix vient de l’intérieur. Ne la cherchez pas à l’extérieur.", source:"Bouddha", meaning:"La paix intérieure commence dans l’esprit."},
+        Spanish:{quote:"La paz viene de dentro. No la busques fuera.", source:"Buda", meaning:"La paz interior empieza en la mente."}
+    },
+    Christianity:{
+        English:{quote:"Love your neighbor as yourself.", source:"Mark 12:31", meaning:"Treat others with kindness and compassion."},
+        Arabic:{quote:"أحب قريبك كنفسك.", source:"مرقس 12:31", meaning:"عامل الآخرين بلطف ورحمة."},
+        Chinese:{quote:"爱人如己。", source:"马可福音 12:31", meaning:"以善良和同情心对待他人。"},
+        French:{quote:"Aime ton prochain comme toi-même.", source:"Marc 12:31", meaning:"Traitez les autres avec bonté et compassion."},
+        Russian:{quote:"Возлюби ближнего твоего, как самого себя.", source:"Марка 12:31", meaning:"Относитесь к другим с добротой и состраданием."},
+        French:{quote:"Aime ton prochain comme toi-même.", source:"Marc 12:31", meaning:"Traitez les autres avec bonté et compassion."},
+        Spanish:{quote:"Ama a tu prójimo como a ti mismo.", source:"Marcos 12:31", meaning:"Trata a los demás con bondad y compasión."}
+    },
+    Hinduism:{
+        English:{quote:"You have the right to work, but never to the fruit of work.", source:"Bhagavad Gita 2:47", meaning:"Focus on effort rather than outcomes."},
+        Arabic:{quote:"لك الحق في العمل، وليس في ثمرة العمل.", source:"بهاغافاد غيتا 2:47", meaning:"ركّز على الجهد لا على النتائج فقط."},
+        Chinese:{quote:"你有权工作，但无权执着于结果。", source:"博伽梵歌 2:47", meaning:"专注于努力，而不仅仅是结果。"},
+        French:{quote:"Tu as droit à l’action, mais jamais aux fruits de l’action.", source:"Bhagavad Gita 2:47", meaning:"Concentrez-vous sur l’effort plutôt que sur le résultat."},
+        Russian:{quote:"Ты имеешь право на труд, но не на плоды труда.", source:"Бхагавад-гита 2:47", meaning:"Сосредоточьтесь на усилиях, а не только на результате."},
+        French:{quote:"Tu as droit à l’action, mais jamais aux fruits de l’action.", source:"Bhagavad Gita 2:47", meaning:"Concentrez-vous sur l’effort plutôt que sur le résultat."},
+        Spanish:{quote:"Tienes derecho a la acción, pero no a sus frutos.", source:"Bhagavad Gita 2:47", meaning:"Concéntrate en el esfuerzo más que en el resultado."}
+    },
+    Islam:{
+        English:{quote:"And whoever puts their trust in God, He will be enough for them.", source:"Qur’an 65:3", meaning:"Trust and sincere effort can bring inner peace during uncertainty."},
+        Arabic:{quote:"ومن يتوكل على الله فهو حسبه.", source:"القرآن 65:3", meaning:"الثقة بالله مع السعي الصادق تمنح الطمأنينة وقت عدم اليقين."},
+        Chinese:{quote:"凡信赖真主的人，真主必使他满足。", source:"古兰经 65:3", meaning:"信任与真诚的努力会带来内心的平静。"},
+        French:{quote:"Quiconque place sa confiance en Dieu, Il lui suffira.", source:"Coran 65:3", meaning:"La confiance et l’effort sincère apportent la paix intérieure."},
+        Russian:{quote:"Тому, кто уповает на Бога, Его будет достаточно.", source:"Коран 65:3", meaning:"Доверие и искренние усилия приносят внутренний покой."},
+        French:{quote:"Quiconque place sa confiance en Dieu, Il lui suffira.", source:"Coran 65:3", meaning:"La confiance et l’effort sincère apportent la paix intérieure."},
+        Spanish:{quote:"Quien confía en Dios, Él le bastará.", source:"Corán 65:3", meaning:"La confianza y el esfuerzo sincero traen paz interior."}
+    },
+    Judaism:{
+        English:{quote:"Justice, justice shall you pursue.", source:"Deuteronomy 16:20", meaning:"Always seek fairness and righteousness."},
+        Arabic:{quote:"العدل، العدل تتبع.", source:"تثنية 16:20", meaning:"اسعَ دائمًا إلى الإنصاف والاستقامة."},
+        Chinese:{quote:"你要追求公义。", source:"申命记 16:20", meaning:"始终追求公平与正义。"},
+        French:{quote:"La justice, la justice tu poursuivras.", source:"Deutéronome 16:20", meaning:"Cherchez toujours l’équité et la droiture."},
+        Russian:{quote:"Справедливости, справедливости ищи.", source:"Второзаконие 16:20", meaning:"Всегда стремитесь к честности и праведности."},
+        French:{quote:"La justice, la justice tu poursuivras.", source:"Deutéronome 16:20", meaning:"Cherchez toujours l’équité et la droiture."},
+        Spanish:{quote:"Justicia, justicia perseguirás.", source:"Deuteronomio 16:20", meaning:"Busca siempre la equidad y la rectitud."}
+    }
+};
+
+let currentShareText = "";
+
+function showQuote(){
+    const religion = document.getElementById("religion").value;
+    const language = document.getElementById("language").value;
+    const topic = document.getElementById("topic").value;
+
+    if(!religion){
+        document.getElementById("quoteBox").style.display = "none";
+        document.getElementById("sharePreview").style.display = "none";
+        document.getElementById("shareButtons").style.display = "none";
+        return;
+    }
+
+    const selected = quotes[religion][language];
+
+    document.getElementById("quoteBox").style.direction = language === "Arabic" ? "rtl" : "ltr";
+    document.getElementById("sharePreview").style.direction = language === "Arabic" ? "rtl" : "ltr";
+
+    document.getElementById("quote").innerText = selected.quote;
+    document.getElementById("source").innerText = selected.source;
+    document.getElementById("meaning").innerText = selected.meaning;
+
+    currentShareText = `${selected.quote}
+${selected.source}
+${selected.meaning}`;
+
+    const encodedText = encodeURIComponent(currentShareText);
+
+    document.getElementById("whatsappShare").href = `https://wa.me/?text=${encodedText}`;
+    document.getElementById("facebookShare").href = `https://www.facebook.com/sharer/sharer.php?quote=${encodedText}`;
+    document.getElementById("xShare").href = `https://twitter.com/intent/tweet?text=${encodedText}`;
+    document.getElementById("telegramShare").href = `https://t.me/share/url?text=${encodedText}`;
+    document.getElementById("emailShare").href = `mailto:?subject=Quote of the Day&body=${encodedText}`;
+
+    document.getElementById("quoteBox").style.display = "block";
+    document.getElementById("sharePreview").style.display = "block";
+    document.getElementById("shareButtons").style.display = "flex";
+
+    // Reset dropdowns back to baseline
+    document.getElementById("religion").selectedIndex = 0;
+    document.getElementById("topic").selectedIndex = 0;
+    document.getElementById("language").selectedIndex = 0;
+}
+
+function copyQuote(){
+    navigator.clipboard.writeText(currentShareText).then(() => {
+        alert("Quote copied!");
+    });
+}
+
+function shareInstagram(){
+    navigator.clipboard.writeText(currentShareText).then(() => {
+        window.open("https://www.instagram.com/", "_blank");
+        alert("Quote copied. Paste it into your Instagram post, story, or caption.");
+    });
+}
+</script>
+
+</body>
+</html>
