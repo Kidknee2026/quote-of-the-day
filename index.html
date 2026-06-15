@@ -1,163 +1,152 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quote of the Day</title>
-
 <style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:linear-gradient(to right,#f4f6ff,#f9f2dc,#f4f6ff);
-    color:#1d2433;
-}
-
-.wrapper{
-    max-width:1100px;
-    margin:40px auto;
-    padding:20px;
-}
-
-h1{
-    font-size:64px;
-}
-
-.search-box{
-    background:white;
-    padding:18px;
-    border-radius:18px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-}
-
-select,button{
-    padding:14px;
-    border-radius:12px;
-    border:1px solid #ddd;
-}
-
-button{
-    background:#574bff;
-    color:white;
-    border:none;
-    cursor:pointer;
-}
-
-#quoteBox{
-    margin-top:20px;
-    background:white;
-    padding:25px;
-    border-radius:18px;
-    display:none;
-}
-
-.quote{
-    font-size:34px;
-    line-height:1.4;
-}
-
-.source{
-    margin-top:10px;
-    font-weight:bold;
-}
-
-.meaning{
-    margin-top:10px;
-    color:#444;
-}
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(to right,#f4f6ff,#f9f2dc,#f4f6ff);color:#1d2433}
+.wrapper{max-width:1100px;margin:40px auto;padding:20px}
+.badge{display:inline-block;background:#fff3d8;color:#b35a00;padding:6px 14px;border-radius:20px;font-size:12px;margin-bottom:10px}
+h1{font-size:64px;margin:0;font-weight:800}
+.subtitle{margin-top:10px;color:#444;line-height:1.5}
+.search-box{margin-top:30px;background:white;border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.05);flex-wrap:wrap}
+.search-box label{font-weight:600;font-size:14px}
+select{flex:1;min-width:180px;padding:14px;border-radius:12px;border:1px solid #ddd}
+button{background:#574bff;color:white;border:none;border-radius:12px;padding:14px 20px;font-weight:700;cursor:pointer}
+#errorMessage{display:none;color:#b00020;font-weight:700;margin-top:12px}
+#quoteBox{margin-top:25px;padding:30px;border-radius:18px;background:white;display:none;box-shadow:0 2px 8px rgba(0,0,0,.05);text-align:center}
+.quote{font-size:34px;line-height:1.4;margin-bottom:14px}
+.source{font-weight:bold;margin-bottom:12px}
+.meaning{color:#333}
+.share-buttons{display:none;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.share-buttons a,.share-buttons button{width:44px;height:44px;display:flex;align-items:center;justify-content:center;text-decoration:none;background:#111827;color:white;border:none;border-radius:50%;cursor:pointer;padding:0}
+.share-buttons svg{width:22px;height:22px;fill:white}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+.card{background:white;padding:18px;border-radius:18px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+input{width:80%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top:10px}
+.footer{text-align:center;font-size:12px;margin-top:20px;color:#666}
+@media(max-width:700px){h1{font-size:42px}.cards{grid-template-columns:1fr}.search-box{align-items:stretch}button,select{width:100%}}
 </style>
 </head>
-
 <body>
-
 <div class="wrapper">
-
+<div class="badge">Daily Wisdom</div>
 <h1>Quote of the Day</h1>
+<div class="subtitle">Choose a religion, topic, and language to receive a thoughtful quote from a holy book, with a short reflection.</div>
 
 <div class="search-box">
-
+<label>Choose filters</label>
 <select id="religion">
 <option value="">Select religion</option>
-<option>Buddhism</option>
-<option>Christianity</option>
-<option>Hinduism</option>
-<option>Islam</option>
-<option>Judaism</option>
+<option>Buddhism</option><option>Christianity</option><option>Hinduism</option><option>Islam</option><option>Judaism</option>
 </select>
-
 <select id="topic">
 <option value="">Select topic</option>
-<option>Faith</option>
-<option>Justice</option>
-<option>Love</option>
-<option>Patience</option>
-<option>Peace</option>
-<option>Wisdom</option>
+<option>Compassion</option><option>Faith</option><option>Forgiveness</option><option>Hope</option><option>Justice</option><option>Love</option><option>Patience</option><option>Peace</option><option>Strength</option><option>Wisdom</option>
 </select>
-
 <select id="language">
 <option value="">Select language</option>
-<option>English</option>
+<option>Arabic</option><option>Chinese</option><option>English</option><option>French</option><option>Russian</option><option>Spanish</option>
 </select>
-
-<button onclick="showQuote()">Show Quote</button>
-
+<button onclick="showQuote()">Show me today's quote</button>
 </div>
+
+<div id="errorMessage">Please select religion, topic, and language.</div>
 
 <div id="quoteBox">
 <div class="quote" id="quote"></div>
 <div class="source" id="source"></div>
 <div class="meaning" id="meaning"></div>
+
+<div class="share-buttons" id="shareButtons">
+<button onclick="copyQuote()" title="Copy"><svg viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3v12h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
+<a id="whatsappShare" target="_blank" title="WhatsApp"><svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .2 5.3.2 11.8c0 2.1.6 4.1 1.6 5.9L0 24l6.5-1.7c1.7.9 3.6 1.4 5.6 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.3-6.2-3.5-8.4z"/></svg></a>
+<a id="telegramShare" target="_blank" title="Telegram"><svg viewBox="0 0 24 24"><path d="M9.4 16.4 9 21.8c.6 0 .9-.3 1.2-.6l2.9-2.8 6 4.4c1.1.6 1.9.3 2.2-1l4-18.7c.4-1.6-.6-2.2-1.6-1.8L1.1 10C-.4 10.6-.4 11.5.8 11.9l5.8 1.8L20 5.2c.6-.4 1.2-.2.7.2L9.4 16.4z"/></svg></a>
+<a id="xShare" target="_blank" title="X"><svg viewBox="0 0 24 24"><path d="M18.9 1.2h3.7l-8.1 9.3L24 22.8h-7.4l-5.8-7.6-6.6 7.6H.5l8.7-10L0 1.2h7.6l5.2 6.9 6.1-6.9zm-1.3 19.4h2L6.5 3.3H4.3l13.3 17.3z"/></svg></a>
+<a id="emailShare" title="Email"><svg viewBox="0 0 24 24"><path d="M20 4H4C2.9 4 2 4.9 2 6v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+</div>
 </div>
 
+<div class="cards">
+<div class="card"><h3>Recommended Reading</h3><a id="affiliateLink" href="#" target="_blank"><button id="affiliateButton">Choose a religion first</button></a></div>
+<div class="card"><h3>Get Daily Quotes</h3><input type="email" placeholder="Your email"></div>
+</div>
+<div class="footer">Quotes are for inspiration and education. Always refer to trusted translations and scholars for interpretation.</div>
 </div>
 
 <script>
+const affiliateLinks={
+Islam:{name:"The Clear Quran",link:"https://amzn.to/4uGM8Mq"},
+Christianity:{name:"NIV Study Bible",link:"https://amzn.to/4emR17d"},
+Buddhism:{name:"The Heart of the Buddha's Teaching",link:"https://amzn.to/4fN4BTM"},
+Hinduism:{name:"Bhagavad Gita",link:"https://amzn.to/4oyfhbh"},
+Judaism:{name:"The Torah",link:"https://amzn.to/4vbXAka"}
+};
 
-let allQuotes = {};
+let allQuotes={};
+let currentShareText="";
 
 fetch("quotes.json")
-.then(response => response.json())
-.then(data => {
-    allQuotes = data;
-});
+.then(r=>r.json())
+.then(data=>{allQuotes=data;})
+.catch(()=>{document.getElementById("errorMessage").innerText="Could not load quotes.json.";document.getElementById("errorMessage").style.display="block";});
 
 function showQuote(){
+const religion=document.getElementById("religion").value;
+const topic=document.getElementById("topic").value;
+const language=document.getElementById("language").value;
+const errorMessage=document.getElementById("errorMessage");
 
-    const religion = document.getElementById("religion").value;
-    const topic = document.getElementById("topic").value;
-    const language = document.getElementById("language").value;
+if(!religion||!topic||!language){
+document.getElementById("quoteBox").style.display="none";
+document.getElementById("shareButtons").style.display="none";
+errorMessage.innerText="Please select religion, topic, and language.";
+errorMessage.style.display="block";
+return;
+}
 
-    if(!religion || !topic || !language){
-        alert("Please select all fields.");
-        return;
-    }
+const list=allQuotes[religion]||[];
+const matches=list.filter(q=>q.topic===topic&&q.language===language);
 
-    const religionQuotes = allQuotes[religion] || [];
+if(matches.length===0){
+errorMessage.innerText="No quote found for this selection yet. Add one to quotes.json.";
+errorMessage.style.display="block";
+return;
+}
 
-    const filtered = religionQuotes.filter(q =>
-        q.topic === topic &&
-        q.language === language
-    );
+errorMessage.style.display="none";
+const selected=matches[Math.floor(Math.random()*matches.length)];
+const isArabic=language==="Arabic";
 
-    if(filtered.length === 0){
-        alert("No matching quote found.");
-        return;
-    }
+document.getElementById("quoteBox").style.direction=isArabic?"rtl":"ltr";
+document.getElementById("quote").innerText=selected.quote;
+document.getElementById("source").innerText=selected.source;
+document.getElementById("meaning").innerText=selected.meaning;
 
-    const randomQuote =
-        filtered[Math.floor(Math.random() * filtered.length)];
+const affiliate=affiliateLinks[religion];
+document.getElementById("affiliateLink").href=affiliate.link;
+document.getElementById("affiliateButton").innerText=affiliate.name;
 
-    document.getElementById("quote").innerText = randomQuote.quote;
-    document.getElementById("source").innerText = randomQuote.source;
-    document.getElementById("meaning").innerText = randomQuote.meaning;
+currentShareText=`${selected.quote}\n${selected.source}\n${selected.meaning}`;
+const encoded=encodeURIComponent(currentShareText);
 
-    document.getElementById("quoteBox").style.display = "block";
+document.getElementById("whatsappShare").href=`https://wa.me/?text=${encoded}`;
+document.getElementById("telegramShare").href=`https://t.me/share/url?text=${encoded}`;
+document.getElementById("xShare").href=`https://twitter.com/intent/tweet?text=${encoded}`;
+document.getElementById("emailShare").href=`mailto:?subject=Quote of the Day&body=${encoded}`;
+
+document.getElementById("quoteBox").style.display="block";
+document.getElementById("shareButtons").style.display="flex";
+
+document.getElementById("religion").selectedIndex=0;
+document.getElementById("topic").selectedIndex=0;
+document.getElementById("language").selectedIndex=0;
+}
+
+function copyQuote(){
+navigator.clipboard.writeText(currentShareText).then(()=>alert("Quote copied!"));
 }
 </script>
-
 </body>
 </html>
