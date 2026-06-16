@@ -21,7 +21,6 @@ button{background:#574bff;color:white;border:none;border-radius:12px;padding:14p
 .meaning{color:#333}
 .share-buttons{display:none;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
 .share-buttons a,.share-buttons button{width:44px;height:44px;display:flex;align-items:center;justify-content:center;text-decoration:none;background:#111827;color:white;border:none;border-radius:50%;cursor:pointer;padding:0}
-.share-buttons svg{width:22px;height:22px;fill:white}
 .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
 .card{background:white;padding:18px;border-radius:18px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
 input{width:80%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top:10px}
@@ -59,11 +58,11 @@ input{width:80%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top
 <div class="source" id="source"></div>
 <div class="meaning" id="meaning"></div>
 <div class="share-buttons" id="shareButtons">
-<button onclick="copyQuote()" title="Copy"><svg viewBox="0 0 24 24"><path d="M16 1H4C2.9 1 2 1.9 2 3v12h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></button>
-<a id="whatsappShare" target="_blank" title="WhatsApp">W</a>
-<a id="telegramShare" target="_blank" title="Telegram">T</a>
-<a id="xShare" target="_blank" title="X">X</a>
-<a id="emailShare" title="Email">@</a>
+<button onclick="copyQuote()" title="Copy">Copy</button>
+<a id="whatsappShare" target="_blank">WhatsApp</a>
+<a id="telegramShare" target="_blank">Telegram</a>
+<a id="xShare" target="_blank">X</a>
+<a id="emailShare">Email</a>
 </div>
 </div>
 
@@ -71,6 +70,7 @@ input{width:80%;padding:12px;border-radius:10px;border:1px solid #ddd;margin-top
 <div class="card"><h3>Recommended Reading</h3><a id="affiliateLink" href="#" target="_blank"><button id="affiliateButton">Choose a religion first</button></a></div>
 <div class="card"><h3>Get Daily Quotes</h3><input type="email" placeholder="Your email"></div>
 </div>
+
 <div class="footer">Quotes are for inspiration and education. Always refer to trusted translations and scholars for interpretation.</div>
 </div>
 
@@ -110,31 +110,19 @@ return;
 }
 
 const list=allQuotes[religion]||[];
-
-// Exact match first
-let matches=list.filter(q=>q.topic===topic && q.language===language);
-
-// Fallback: same religion and same language
-if(matches.length===0){
- matches=list.filter(q=>q.language===language);
-}
-
-// Fallback: same religion, any language
-if(matches.length===0){
- matches=list;
-}
+const matches=list.filter(q=>q.topic===topic && q.language===language);
 
 if(matches.length===0){
-errorMessage.innerText="No quotes found for this religion yet.";
+errorMessage.innerText="No exact quote found for this selection.";
 errorMessage.style.display="block";
 return;
 }
 
 errorMessage.style.display="none";
 const selected=matches[Math.floor(Math.random()*matches.length)];
-const isArabic=selected.language==="Arabic";
+const isRTL=language==="Arabic";
 
-document.getElementById("quoteBox").style.direction=isArabic?"rtl":"ltr";
+document.getElementById("quoteBox").style.direction=isRTL?"rtl":"ltr";
 document.getElementById("quote").innerText=selected.quote;
 document.getElementById("source").innerText=selected.source;
 document.getElementById("meaning").innerText=selected.meaning;
